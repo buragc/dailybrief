@@ -69,7 +69,9 @@ class HackerNewsCollector(SourceCollector):
             summary_parts.append(f"[Submission Text]\n{text[:500]}")
 
         if comment_insights:
-            summary_parts.append(f"[Top {len(comment_insights)} Comment Insights]\n" + "\n".join(f"- {i}." + ins for i, ins in enumerate(comment_insights[:10], 1)))
+            # Format comment insights as HTML bullet points
+            comment_li = "".join(f"<li>{ins}</li>" for ins in comment_insights[:10])
+            summary_parts.append(f"<h3>Top {len(comment_insights)} Comment Insights</h3><ul>{comment_li}</ul>")
 
         summary = "\n\n".join(summary_parts)
 

@@ -49,8 +49,18 @@ class EpubBuilder:
             if topic not in sorted_topics:
                 sorted_topics.append(topic)
 
+        # Add master index chapter first (all headlines)
+        index_html = self._create_index_html(articles)
+        index_chapter = epub.EpubHtml(
+            title="All Headlines",
+            file_name="index.xhtml",
+            lang="en",
+        )
+        index_chapter.content = index_html.encode("utf-8")
+        book.add_item(index_chapter)
+
         # Add chapter content
-        nav_items = []
+        nav_items = [index_chapter]
         for topic in sorted_topics:
             topic_articles = topic_groups[topic]
             chapter_html = self._create_topic_html(topic, topic_articles)
@@ -91,4 +101,13 @@ class EpubBuilder:
             if article.source:
                 html += f'<p><small>Source: {article.source}</small></p>'
 
+        return "<html><body>" + html + "</body></html>"
+
+    def _create_index_html(self, articles: List[Article]) -> str:
+        """Create master index page listing all headlines across all topics."""
+        html = "<h1>Daily Brief — All Headlines</h1><ul>"
+        for article in articles:
+            url_attr = f'href="{article.url}"' if article.url else ""
+            html += f'<li><a {url_attr}>{article.title}</a> — <em>{article.topic}</em></li>'
+        html += "</ul>"
         return "<html><body>" + html + "</body></html>"

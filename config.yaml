@@ -1,0 +1,76 @@
+# Daily Brief Configuration
+source:
+  hackernews:
+    enabled: true
+    count: 10
+    depth: medium  # short, medium, long
+  x_twitter:
+    enabled: true
+    method: timeline  # timeline or topics
+    count: 50
+    skip_ads: true
+    skip_repetitive: true
+  stocks:
+    enabled: true
+    tickers:
+      - DUOL
+      - MSFT
+      - APPL
+      - SMH
+      - XLK
+      - BUG
+      - NVDA
+      - ARM
+      - MRVL
+      - TEM
+    depth: short
+  news:
+    - source: "sozcu.com.tr"
+      language: "tr"
+      depth: medium
+    - source: "duhuliye.com"
+      language: "tr"
+      depth: medium
+    - source: "marketwatch.com"
+      language: "en"
+      depth: medium
+    - source: "reuters.com"
+      language: "en"
+      depth: medium
+  ft:
+    enabled: false
+    method: chrome
+    depth: medium
+  rss:
+    nfl:
+      url: "https://www.nfl.com/news/stories"
+      depth: short
+    nba:
+      url: "https://www.nba.com/news"
+      depth: short
+    epl:
+      url: "https://www.premierleague.com/news"
+      depth: short
+  watchexchange:
+    enabled: false  # runs separately via Hermes cron
+    subreddits:
+      - "r/WatchExchange"
+    keywords:
+      - "omega aqua terra 38mm"
+      - "black"
+delivery:
+  kindle_email: "buragc_0XzMIo@kindle.com"
+  sender_email: "buragbot@gmail.com"
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 587
+epub:
+  title_prefix: "Daily Brief"
+  topic_order:
+    - "AI & Tech"
+    - "Finance & Markets"
+    - "Türkçe Haberler"
+    - "X / Twitter"
+    - "NFL"
+    - "NBA"
+    - "EPL"
+  output_dir: "output"

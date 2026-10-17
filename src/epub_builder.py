@@ -84,18 +84,11 @@ class EpubBuilder:
         html = f"<h1>{topic}</h1>"
 
         for article in articles:
-            # Check if article contains HTML table (stock data)
-            if "<table" in article.summary:
-                html += f'<h2>{article.title}</h2>'
-                html += article.summary
-                if article.source:
-                    html += f'<p><small>Source: {article.source}</small></p>'
-            else:
-                # Regular article with URL
-                url_attr = f'href="{article.url}"' if article.url else ""
-                html += f'<h2 {url_attr}>{article.title}</h2>'
-                html += f'<p>{article.summary}</p>'
-                if article.source:
-                    html += f'<p><small>Source: {article.source}</small></p>'
+            # Regular article with URL
+            url_attr = f'href="{article.url}"' if article.url else ""
+            html += f'<h2 {url_attr}>{article.title}</h2>'
+            html += f'<p>{article.summary}</p>'
+            if article.source:
+                html += f'<p><small>Source: {article.source}</small></p>'
 
         return "<html><body>" + html + "</body></html>"

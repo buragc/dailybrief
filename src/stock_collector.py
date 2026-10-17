@@ -56,29 +56,20 @@ class StockCollector(SourceCollector):
                     "change_pct": str(e)[:30],
                 })
 
-        # Return as a single article with table data
-        table_html = self._create_stock_table(stock_data)
+        # Return as a single article with plain text stock data
+        text_body = self._format_stock_data(stock_data)
         return [Article(
             title="Stock Market Performance",
-            summary=table_html,
+            summary=text_body,
             source="Yahoo Finance",
             topic="Finance & Markets",
         )]
 
-    def _create_stock_table(self, stock_data: List[dict]) -> str:
-        """Create an HTML table for stock data."""
-        html = "<table style='border-collapse: collapse; width: 100%; font-size: 12px;'>"
-        html += "<tr style='background: #f0f0f0;'><th style='border: 1px solid #ccc; padding: 6px; text-align: left;'>Ticker</th>"
-        html += "<th style='border: 1px solid #ccc; padding: 6px; text-align: right;'>Price</th>"
-        html += "<th style='border: 1px solid #ccc; padding: 6px; text-align: right;'>Change</th>"
-        html += "<th style='border: 1px solid #ccc; padding: 6px; text-align: right;'>Change %</th></tr>"
-
+    def _format_stock_data(self, stock_data: List[dict]) -> str:
+        """Format stock data as plain text (no HTML tables)."""
+        lines = []
         for stock in stock_data:
-            color = "green" if stock["change"].startswith("+") else "red"
-            html += f"<tr><td style='border: 1px solid #ccc; padding: 4px;'><strong>{stock['ticker']}</strong></td>"
-            html += f"<td style='border: 1px solid #ccc; padding: 4px; text-align: right;'>{stock['price']}</td>"
-            html += f"<td style='border: 1px solid #ccc; padding: 4px; text-align: right; color: {color};'>{stock['change']}</td>"
-            html += f"<td style='border: 1px solid #ccc; padding: 4px; text-align: right; color: {color};'>{stock['change_pct']}</td></tr>"
+            color = "+" if stock["change"].startswith("+") else ""
+            lines.append(f"{stock['ticker']:6s}  {stock['price']:10s}  {color}{stock['change']:>8s}  {stock['change_pct']}")
 
-        html += "</table>"
-        return html
+        return "Stock  Price        Change    Chg%\n" + "\n".join(lines)
